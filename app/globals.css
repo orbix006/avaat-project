@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --onyx-rgb: 249 249 251;
+    --warm-black-rgb: 255 255 255;
+    --ivory-rgb: 20 20 23;
+    --muted-rgb: 107 114 128;
+  }
+
+  .dark {
+    --onyx-rgb: 13 13 13;
+    --warm-black-rgb: 20 20 20;
+    --ivory-rgb: 245 240 232;
+    --muted-rgb: 138 138 138;
+  }
+
+  /* Accessibility override: elements with a gold background must always use dark text/icons */
+  .bg-gold,
+  .hover\:bg-gold:hover,
+  .bg-gold-light,
+  .hover\:bg-gold-light:hover,
+  .bg-gold-dark,
+  .hover\:bg-gold-dark:hover {
+    --onyx-rgb: 13 13 13 !important;
+  }
+
+  body {
+    @apply bg-warm-black text-ivory font-jost antialiased selection:bg-gold selection:text-onyx;
+  }
+
+  /* Custom thin scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(var(--onyx-rgb));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #c9a84c;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #e8d49e;
+  }
+
+  /* Hide default cursor on desktop/mouse devices to support custom Cursor component */
+  @media (pointer: fine) {
+    body,
+    a,
+    button,
+    input,
+    select,
+    textarea,
+    iframe,
+    [role="button"] {
+      cursor: none !important;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .gold-btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-gold text-onyx font-jost font-medium tracking-wide transition-all duration-300 hover:bg-gold-light hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-warm-black;
+  }
+
+  .gold-btn-outline {
+    @apply inline-flex items-center justify-center px-8 py-3 border border-gold text-gold font-jost font-medium tracking-wide transition-all duration-300 hover:bg-gold hover:text-onyx hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-warm-black;
+  }
+
+  .section-pad {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+
+  .eyebrow {
+    @apply text-gold font-jost font-semibold uppercase tracking-[0.2em] text-sm md:text-base;
+  }
+
+  .section-heading {
+    @apply font-cormorant text-4xl md:text-6xl lg:text-7xl leading-tight text-ivory mb-6;
+  }
+
+  .gold-line {
+    @apply w-24 h-[1px] bg-gold block my-8;
+  }
+}
+

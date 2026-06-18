@@ -1,0 +1,11 @@
+node_modules
+
+note
+module
+.next
+out
+dist
+built
+
+.env.local
+.vercel

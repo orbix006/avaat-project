@@ -1,0 +1,80 @@
+<USER_REQUEST>
+-- ============================================================
+-- AVAAT DESIGN — COMPLETE SUPABASE DATABASE SCHEMA (v3 fixed)
+-- ============================================================
+-- Run this entire file in the Supabase SQL Editor on a fresh
+-- project. It creates all tables, indexes, RLS policies,
+-- functions, triggers, storage bucket setup, and seed data.
+--
+-- FIXES FROM v3 (trigger function runtime errors):
+--   All shared trigger functions (used across multiple tables)
+--   previously accessed NEW/OLD record fields by name
+--   (e.g. NEW.key, NEW.id, NEW.slug). Because PostgreSQL binds
+--   shared trigger functions as RETURNS TRIGGER with an untyped
+--   RECORD, field access by name on a table that doesn't have
+--   that column throws:
+--     "record NEW has no field <name>"
+--   at runtime. Fixed throughout by reading via to_jsonb():
+--     (to_jsonb(NEW)->>'field')
+--   This returns NULL rather than erroring when the field is
+--   absent, and works correctly when it is present.
+--
+--   Functions fixed:
+--     • log_admin_audit()           — NEW.key / OLD.key / NEW.id / OLD.id
+--     • auto_generate_slug()        — NEW.slug / NEW.name / NEW.title / NEW.id
+--     • prevent_duplicate_submission() — NEW.email / NEW.phone
+--     • enforce_featured_projects_limit() — NEW.is_featured / OLD.is_featured / NEW.id
+--     • log_slug_redirect()         — NEW.slug / OLD.slug
+--
+--   Functions that are only ever bound to ONE specific table
+--   (so NEW is typed correctly) are left unchanged:
+--     • set_updated_at()            — bound per-table, always has updated_at
+--     • log_consultation_status_change() — only on consultation_requests
+--     • prevent_privilege_escalation()   — only on profiles
+--     • handle_new_user()                — only on auth.users
+-- ============================================================
+
+-- Enable necessary extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF N
+<truncated 45215 bytes>
+ALL
+  USING (is_admin())
+  WITH CHECK (is_admin());
+
+-- ────────────────────────────────────────────────────────────
+-- PROJECT SERVICES
+-- ────────────────────────────────────────────────────────────
+CREATE POLICY "project_services: public read"
+  ON project_services FOR SELECT
+  USING (TRUE);
+
+CREATE POLICY "project_services: admin full access"
+  ON project_services FOR ALL
+  USING (is_admin())
+  WITH CHECK (is_admin());
+
+-- ────────────────────────────────────────────────────────────
+-- TESTIMONIALS
+-- ────────────────────────────────────────────────────────────
+CREATE POLICY "testimonials: public read published"
+  ON testimonials FOR SELECT
+  USING (is_published = TRUE AND is_deleted = FALSE);
+
+CREATE POLICY "testimonials: admin full access"
+  ON testimonials FOR ALL
+  USING (is_admin())
+  WITH CHECK (is_admin());
+
+-- ────────────────────────────────────────────────────────────
+-- TEAM MEMBERS
+-- ────────────────────────────────────────────────────────────
+CREATE POLICY "team_members: public read active"
+  ON team_members FOR SELECT
+  USING (is_active = TRUE);
+
+CREATE POLICY "team_members: admin full access"
+  O
+<truncated 22410 bytes>
+
+NOTE: The output was truncated because it was too long. Use a more targeted query or a smaller range to get the information you need.
