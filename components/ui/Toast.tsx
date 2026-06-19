@@ -14,8 +14,8 @@ export interface Toast {
 }
 
 interface ToastContextType {
-  toast: (message: string, type: ToastType, duration?: number) => string;
-  dismiss: (id: string) => void;
+  toast: (_message: string, _type: ToastType, _duration?: number) => string;
+  dismiss: (_id: string) => void;
   toasts: Toast[];
 }
 
@@ -63,7 +63,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ToastContainer({ toasts, dismiss }: { toasts: Toast[]; dismiss: (id: string) => void }) {
+function ToastContainer({ toasts, dismiss }: { toasts: Toast[]; dismiss: (_id: string) => void }) {
   return (
     <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3 w-full max-w-sm pointer-events-none">
       <AnimatePresence mode="popLayout">

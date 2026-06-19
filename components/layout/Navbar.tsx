@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -126,10 +127,13 @@ export function Navbar() {
               href="/"
               className="group flex items-center gap-3 leading-none z-50 select-none"
             >
-              <img
+              <Image
                 src="/images/logo.png"
                 alt="Avaat Design Logo"
+                width={40}
+                height={40}
                 className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                priority
               />
               <span className="font-cormorant text-xl tracking-wider text-ivory group-hover:text-gold transition-colors duration-300 font-semibold uppercase">
                 Avaat Design

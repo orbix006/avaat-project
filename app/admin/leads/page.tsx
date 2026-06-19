@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useTransition } from 'react';
+import React, { useState, useEffect, useTransition, useCallback } from 'react';
 import { 
   Inbox, 
   Search, 
@@ -61,7 +61,7 @@ export default function LeadsAdminPage() {
   };
 
   // Fetch leads
-  const loadLeads = async () => {
+  const loadLeads = useCallback(async () => {
     setLoading(true);
     const res = await fetchLeads({
       search: debouncedSearch,
@@ -74,18 +74,19 @@ export default function LeadsAdminPage() {
       setTotalCount(res.count);
       setTotalPages(res.totalPages);
       
-      // Update selected lead if it's currently selected
-      if (selectedLead) {
-        const updated = res.data.find(l => l.id === selectedLead.id);
-        if (updated) setSelectedLead(updated);
-      }
+      // Update selected lead if it's currently selected using functional update
+      setSelectedLead(current => {
+        if (!current) return null;
+        const updated = res.data.find(l => l.id === current.id);
+        return updated || current;
+      });
     }
     setLoading(false);
-  };
+  }, [debouncedSearch, statusFilter, page]);
 
   useEffect(() => {
     loadLeads();
-  }, [debouncedSearch, statusFilter, page]);
+  }, [loadLeads]);
 
   const handleSelectLead = (lead: LeadWithUiStatus) => {
     setSelectedLead(lead);

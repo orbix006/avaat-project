@@ -39,7 +39,7 @@ function LoginForm() {
 
   const onSubmit = async (data: LoginInput) => {
     setSubmitError(null);
-    const loadingToastId = toast('Authenticating administrative profile...', 'loading');
+    toast('Authenticating administrative profile...', 'loading');
 
     startTransition(async () => {
       const formData = new FormData();

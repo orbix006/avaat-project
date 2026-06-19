@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Instagram, MessageCircle, MapPin, Mail } from 'lucide-react';
 import { NAV_LINKS } from '@/lib/constants/navigation';
 
@@ -21,9 +22,11 @@ export function Footer() {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-3">
-                <img
+                <Image
                   src="/images/logo.png"
                   alt="Avaat Design Logo"
+                  width={40}
+                  height={40}
                   className="h-10 w-auto object-contain"
                 />
                 <span className="font-cormorant text-xl tracking-wider text-ivory font-semibold uppercase">

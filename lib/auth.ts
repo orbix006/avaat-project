@@ -2,7 +2,6 @@
 
 import { createServerClient } from './supabase/server';
 import { Database } from '@/types/database';
-import { getFriendlyErrorMessage } from './error-handler';
 
 export async function getUser() {
   const supabase = createServerClient();

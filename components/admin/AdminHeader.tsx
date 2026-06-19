@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { 
   Bell, 
@@ -32,10 +33,13 @@ export function AdminHeader({ setMobileSidebarOpen }: AdminHeaderProps) {
       {/* Mobile Top bar header */}
       <header className="md:hidden w-full bg-warm-black border-b border-gold/10 px-4 py-3 flex items-center justify-between z-20 relative">
         <div className="flex items-center gap-2.5">
-          <img
+          <Image
             src="/images/logo.png"
             alt="Avaat Design Logo"
+            width={24}
+            height={24}
             className="h-6 w-auto object-contain"
+            priority
           />
           <span className="font-cormorant text-sm tracking-wider text-ivory font-semibold uppercase">
             Avaat Design

@@ -172,7 +172,7 @@ export default function ImageUploader({
     if (validFiles.length === 0) return;
 
     setUploadingCount(validFiles.length);
-    const uploadToastId = toast(`Uploading ${validFiles.length} asset(s)...`, 'loading');
+    toast(`Uploading ${validFiles.length} asset(s)...`, 'loading');
 
     const uploadedUrls: string[] = [];
     for (const file of validFiles) {
@@ -230,7 +230,7 @@ export default function ImageUploader({
     }
 
     setUploadingCount(1);
-    const replaceToastId = toast('Replacing media asset...', 'loading');
+    toast('Replacing media asset...', 'loading');
     const newUrl = await uploadToStorage(file);
     
     if (newUrl) {
@@ -257,7 +257,7 @@ export default function ImageUploader({
     const targetUrl = value[index];
     const newUrls = value.filter((_, idx) => idx !== index);
     onChange(newUrls);
-    const deleteToastId = toast('Removing media asset...', 'loading');
+    toast('Removing media asset...', 'loading');
 
     // Call Supabase bucket removal to keep storage clean
     const filePath = getPathFromUrl(targetUrl, bucket);

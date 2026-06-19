@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Mail, Phone, MapPin, Loader2, ArrowRight, CheckCircle, ShieldAlert } from 'lucide-react';
+import { Mail, Phone, MapPin, Loader2, ArrowRight } from 'lucide-react';
 import { Input, Textarea, Select } from '@/components/ui/Input';
 import { consultationSchema, ConsultationFormData } from '@/lib/validations/consultation';
 import { useToast } from '@/components/ui/Toast';
@@ -61,7 +61,7 @@ export function Contact() {
 
   const onSubmit = async (data: ConsultationFormData) => {
     setServerError('');
-    const loadingToastId = toast('Submitting your consultation request...', 'loading');
+    toast('Submitting your consultation request...', 'loading');
     try {
       const res = await fetch('/api/consultation', {
         method: 'POST',

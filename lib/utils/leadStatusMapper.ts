@@ -9,7 +9,7 @@ export function mapUiToDbStatus(uiStatus: UiStatus): DbStatus {
   }
 }
 
-export function mapDbToUiStatus(dbStatus: DbStatus, internalNotes?: string | null): UiStatus {
+export function mapDbToUiStatus(dbStatus: DbStatus, _internalNotes?: string | null): UiStatus {
   if (dbStatus === 'pending') return 'New';
   if (dbStatus === 'contacted') return 'Contacted';
   return 'Closed';

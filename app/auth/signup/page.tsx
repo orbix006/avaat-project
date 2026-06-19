@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -46,7 +47,7 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupInput) => {
     setSubmitError(null);
-    const loadingToastId = toast('Creating account...', 'loading');
+    toast('Creating account...', 'loading');
 
     startTransition(async () => {
       const formData = new FormData();
@@ -120,10 +121,13 @@ export default function SignupPage() {
                 {/* Logo / Header */}
                 <div className="text-center pb-6 border-b border-[#F0EFEA] dark:border-[#262626] mb-8">
                   <div className="flex justify-center items-center gap-3 mb-3">
-                    <img
+                    <Image
                       src="/images/logo.png"
                       alt="Avaat Design Logo"
+                      width={40}
+                      height={40}
                       className="h-10 w-auto object-contain"
+                      priority
                     />
                     <span className="font-cormorant text-xl tracking-wider text-[#141417] dark:text-[#F5EFE6] font-semibold uppercase">
                       Avaat Design

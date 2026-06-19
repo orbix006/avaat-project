@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function Loader() {
@@ -47,10 +48,13 @@ export function Loader() {
             transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="text-center flex flex-col items-center gap-6"
           >
-            <img
+            <Image
               src="/images/logo.png"
               alt="Avaat Design Logo"
+              width={80}
+              height={80}
               className="h-16 md:h-20 w-auto object-contain mx-auto"
+              priority
             />
             <div>
               <p className="font-cormorant text-7xl md:text-9xl text-gold tracking-[0.35em] pl-[0.35em]">

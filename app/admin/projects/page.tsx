@@ -25,9 +25,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Eye,
-  EyeOff,
-  Github,
-  Link2
+  EyeOff
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import {
@@ -41,7 +39,6 @@ import {
   reorderProjectMedia,
   addProjectBeforeAfter,
   deleteProjectBeforeAfter,
-  bulkUpdateProjectsStatus,
   ProjectRow,
   ProjectMediaRow,
   ProjectBeforeAfterRow

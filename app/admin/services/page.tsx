@@ -174,6 +174,7 @@ export default function ServicesAdminPage() {
         long_desc: data.long_desc ?? null,
   
         icon_name: data.icon_name,
+        cover_image: null,
         sort_order: data.sort_order,
         is_active: data.is_active,
       };
@@ -218,6 +219,7 @@ export default function ServicesAdminPage() {
         long_desc: data.long_desc ?? null,
 
         icon_name: data.icon_name,
+        cover_image: activeEditService.cover_image,
         sort_order: data.sort_order,
         is_active: data.is_active,
       };
@@ -244,6 +246,7 @@ export default function ServicesAdminPage() {
         long_desc: service.long_desc ?? null,
 
         icon_name: service.icon_name ?? 'Briefcase',
+        cover_image: service.cover_image,
         sort_order: service.sort_order,
         is_active: updatedStatus
       });
