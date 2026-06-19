@@ -6,19 +6,19 @@ import React, { useState, useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { 
-  FolderGit2, 
-  Plus, 
-  Search, 
-  Edit3, 
-  Trash2, 
-  ExternalLink, 
-  Filter, 
-  X, 
-  UploadCloud, 
-  Loader2, 
-  Save, 
-  Sparkles, 
+import {
+  FolderGit2,
+  Plus,
+  Search,
+  Edit3,
+  Trash2,
+  ExternalLink,
+  Filter,
+  X,
+  UploadCloud,
+  Loader2,
+  Save,
+  Sparkles,
   Image as ImageIcon,
   ArrowUp,
   ArrowDown,
@@ -30,11 +30,11 @@ import {
   Link2
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
-import { 
-  fetchProjects, 
-  createProject, 
-  updateProject, 
-  deleteProject, 
+import {
+  fetchProjects,
+  createProject,
+  updateProject,
+  deleteProject,
   fetchProjectById,
   addProjectMedia,
   removeProjectMedia,
@@ -81,7 +81,7 @@ export default function ProjectsAdminPage() {
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [activeEditProject, setActiveEditProject] = useState<ProjectRow | null>(null);
-  
+
   // Tab states for edit modal
   const [activeTab, setActiveTab] = useState<'details' | 'gallery' | 'beforeafter'>('details');
 
@@ -234,7 +234,7 @@ export default function ProjectsAdminPage() {
   const handleEditClick = async (project: ProjectRow) => {
     setActiveEditProject(project);
     setActiveTab('details');
-    
+
     // Set edit details form default values
     editForm.reset({
       title: project.title,
@@ -245,7 +245,7 @@ export default function ProjectsAdminPage() {
       featured_image: project.featured_image || '',
       featured: project.featured,
       display_order: project.display_order,
-      completion_year: project.completion_year || null,
+
       status: project.status,
       project_url: project.project_url || '',
       client_name: project.client_name || '',
@@ -253,7 +253,7 @@ export default function ProjectsAdminPage() {
     });
 
     setIsEditOpen(true);
-    
+
     // Load project media and before/after sets
     const res = await fetchProjectById(project.id);
     if (res.data) {
@@ -336,7 +336,7 @@ export default function ProjectsAdminPage() {
     if (!file) return;
 
     const targetForm = formType === 'create' ? createForm : editForm;
-    
+
     // For main cover upload we use a temporary random namespace if create, or real id if edit
     const targetId = formType === 'create' ? 'temp' : activeEditProject?.id || 'temp';
 
@@ -439,7 +439,7 @@ export default function ProjectsAdminPage() {
 
     const items = [...gallery];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    
+
     // Swap
     const temp = items[index];
     items[index] = items[targetIndex];
@@ -535,22 +535,21 @@ export default function ProjectsAdminPage() {
   const filteredProjects = projects.filter(project => {
     const matchesFilter = filter === 'all' || project.category === filter;
     const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
-    const matchesSearch = project.title.toLowerCase().includes(search.toLowerCase()) || 
-                          project.location.toLowerCase().includes(search.toLowerCase()) ||
-                          (project.short_desc && project.short_desc.toLowerCase().includes(search.toLowerCase()));
+    const matchesSearch = project.title.toLowerCase().includes(search.toLowerCase()) ||
+      project.location.toLowerCase().includes(search.toLowerCase()) ||
+      (project.short_desc && project.short_desc.toLowerCase().includes(search.toLowerCase()));
     return matchesFilter && matchesStatus && matchesSearch;
   });
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
-      
+
       {/* Toast Notification HUD */}
       {notification && (
-        <div className={`fixed top-6 right-6 z-50 p-4 rounded-xl border flex items-center gap-3 shadow-2xl animate-in slide-in-from-top-4 duration-300 ${
-          notification.type === 'success' 
-            ? 'bg-green-950/90 text-green-400 border-green-500/30' 
+        <div className={`fixed top-6 right-6 z-50 p-4 rounded-xl border flex items-center gap-3 shadow-2xl animate-in slide-in-from-top-4 duration-300 ${notification.type === 'success'
+            ? 'bg-green-950/90 text-green-400 border-green-500/30'
             : 'bg-red-950/90 text-red-400 border-red-500/30'
-        }`}>
+          }`}>
           {notification.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
           <span className="text-xs font-semibold">{notification.message}</span>
         </div>
@@ -562,7 +561,7 @@ export default function ProjectsAdminPage() {
           <h2 className="font-cormorant text-2xl md:text-3xl font-bold text-ivory">Projects Directory</h2>
           <p className="text-xs text-muted mt-1 font-jost">Manage the architectural and interior design portfolios showcased in the public gallery.</p>
         </div>
-        <button 
+        <button
           onClick={() => setIsCreateOpen(true)}
           className="gold-btn-primary text-xs px-6 py-2.5 rounded shadow-lg shadow-gold/25 flex items-center gap-2 transition-all hover:scale-[1.02]"
         >
@@ -597,11 +596,10 @@ export default function ProjectsAdminPage() {
                 key={cat}
                 type="button"
                 onClick={() => setFilter(cat)}
-                className={`text-xs px-4 py-1.5 rounded uppercase tracking-wider transition-all shrink-0 font-medium border ${
-                  filter === cat
+                className={`text-xs px-4 py-1.5 rounded uppercase tracking-wider transition-all shrink-0 font-medium border ${filter === cat
                     ? 'bg-gold text-onyx border-gold font-bold shadow-md shadow-gold/10'
                     : 'bg-onyx text-ivory/60 hover:text-gold border-gold/5 hover:border-gold/20'
-                }`}
+                  }`}
               >
                 {cat}
               </button>
@@ -622,11 +620,10 @@ export default function ProjectsAdminPage() {
               key={statusVal}
               type="button"
               onClick={() => setStatusFilter(statusVal)}
-              className={`text-xs px-4 py-1.5 rounded uppercase tracking-wider transition-all shrink-0 font-medium border ${
-                statusFilter === statusVal
+              className={`text-xs px-4 py-1.5 rounded uppercase tracking-wider transition-all shrink-0 font-medium border ${statusFilter === statusVal
                   ? 'bg-gold text-onyx border-gold font-bold shadow-md shadow-gold/10'
                   : 'bg-onyx text-ivory/60 hover:text-gold border-gold/5 hover:border-gold/20'
-              }`}
+                }`}
             >
               {statusVal}
             </button>
@@ -643,33 +640,32 @@ export default function ProjectsAdminPage() {
       ) : filteredProjects.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
-            <div 
-              key={project.id} 
+            <div
+              key={project.id}
               className="bg-warm-black border border-gold/10 hover:border-gold/25 rounded-xl p-5 flex flex-col justify-between transition-all duration-300 relative group overflow-hidden"
             >
               {/* Cover Image / Thumbnail */}
               <div className="relative aspect-video rounded-lg overflow-hidden border border-white/5 bg-onyx shrink-0">
                 {project.featured_image ? (
-                  <img 
-                    src={project.featured_image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  <img
+                    src={project.featured_image}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center text-gold/30 bg-gold/5 gap-2">
-                     <FolderGit2 className="w-8 h-8" />
-                     <span className="text-[10px] tracking-widest uppercase">No cover image</span>
+                    <FolderGit2 className="w-8 h-8" />
+                    <span className="text-[10px] tracking-widest uppercase">No cover image</span>
                   </div>
                 )}
-                
+
                 {/* Visibility Badge */}
-                <span className={`absolute top-3 left-3 px-2 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase border ${
-                  project.status === 'published'
+                <span className={`absolute top-3 left-3 px-2 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase border ${project.status === 'published'
                     ? 'bg-green-950/80 text-green-400 border-green-500/20'
                     : project.status === 'draft'
-                    ? 'bg-yellow-950/80 text-yellow-400 border-yellow-500/20'
-                    : 'bg-red-950/80 text-red-400 border-red-500/20'
-                }`}>
+                      ? 'bg-yellow-950/80 text-yellow-400 border-yellow-500/20'
+                      : 'bg-red-950/80 text-red-400 border-red-500/20'
+                  }`}>
                   {project.status}
                 </span>
 
@@ -691,9 +687,9 @@ export default function ProjectsAdminPage() {
                       {project.category}
                     </span>
                   </div>
-                  
+
                   <p className="text-xs text-muted mt-2 line-clamp-2 min-h-[2rem] leading-relaxed">{project.short_desc}</p>
-                  
+
                   <div className="text-[10px] text-muted/80 mt-2 font-mono flex flex-wrap items-center gap-1.5">
                     <span>Slug: /{project.slug}</span>
                     <span className="text-gold/30">•</span>
@@ -726,21 +722,21 @@ export default function ProjectsAdminPage() {
                   </button>
 
                   <div className="flex items-center gap-1">
-                    <button 
+                    <button
                       onClick={() => handleEditClick(project)}
                       className="p-1.5 text-muted hover:text-gold hover:bg-gold/5 rounded transition-all"
                       title="Edit Project Configuration"
                     >
                       <Edit3 className="w-4 h-4" />
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDeleteClick(project.id)}
                       className="p-1.5 text-muted hover:text-red-400 hover:bg-red-500/5 rounded transition-all"
                       title="Delete Project Portfolio"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
-                    <a 
+                    <a
                       href={`/portfolio/${project.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -772,7 +768,7 @@ export default function ProjectsAdminPage() {
                 <FolderGit2 className="w-5 h-5 text-gold" />
                 <h3 className="font-cormorant text-lg font-bold text-ivory">Create Portfolio Project</h3>
               </div>
-              <button 
+              <button
                 onClick={() => setIsCreateOpen(false)}
                 className="p-1.5 text-muted hover:text-gold hover:bg-gold/5 rounded-full"
               >
@@ -782,7 +778,7 @@ export default function ProjectsAdminPage() {
 
             {/* Form */}
             <form onSubmit={createForm.handleSubmit(onCreateSubmit)} className="flex-1 overflow-y-auto p-6 space-y-6">
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {/* Title */}
                 <div className="space-y-2">
@@ -985,7 +981,7 @@ export default function ProjectsAdminPage() {
       {isEditOpen && activeEditProject && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-3xl bg-warm-black border border-gold/15 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200">
-            
+
             {/* Modal Header */}
             <div className="px-6 py-5 border-b border-gold/10 flex justify-between items-center bg-onyx/10 shrink-0">
               <div className="flex items-center gap-2">
@@ -994,7 +990,7 @@ export default function ProjectsAdminPage() {
                   Edit Project: <span className="text-gold">{activeEditProject.title}</span>
                 </h3>
               </div>
-              <button 
+              <button
                 onClick={() => setIsEditOpen(false)}
                 className="p-1.5 text-muted hover:text-gold hover:bg-gold/5 rounded-full"
               >
@@ -1006,27 +1002,24 @@ export default function ProjectsAdminPage() {
             <div className="px-6 border-b border-gold/10 flex gap-4 bg-onyx/20 shrink-0">
               <button
                 onClick={() => setActiveTab('details')}
-                className={`py-3 text-xs font-semibold uppercase tracking-wider relative transition-all ${
-                  activeTab === 'details' ? 'text-gold' : 'text-muted hover:text-ivory'
-                }`}
+                className={`py-3 text-xs font-semibold uppercase tracking-wider relative transition-all ${activeTab === 'details' ? 'text-gold' : 'text-muted hover:text-ivory'
+                  }`}
               >
                 Project Details
                 {activeTab === 'details' && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold" />}
               </button>
               <button
                 onClick={() => setActiveTab('gallery')}
-                className={`py-3 text-xs font-semibold uppercase tracking-wider relative transition-all ${
-                  activeTab === 'gallery' ? 'text-gold' : 'text-muted hover:text-ivory'
-                }`}
+                className={`py-3 text-xs font-semibold uppercase tracking-wider relative transition-all ${activeTab === 'gallery' ? 'text-gold' : 'text-muted hover:text-ivory'
+                  }`}
               >
                 Image Gallery ({gallery.length})
                 {activeTab === 'gallery' && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold" />}
               </button>
               <button
                 onClick={() => setActiveTab('beforeafter')}
-                className={`py-3 text-xs font-semibold uppercase tracking-wider relative transition-all ${
-                  activeTab === 'beforeafter' ? 'text-gold' : 'text-muted hover:text-ivory'
-                }`}
+                className={`py-3 text-xs font-semibold uppercase tracking-wider relative transition-all ${activeTab === 'beforeafter' ? 'text-gold' : 'text-muted hover:text-ivory'
+                  }`}
               >
                 Before/After Slides ({beforeAfters.length})
                 {activeTab === 'beforeafter' && <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold" />}
@@ -1176,14 +1169,14 @@ export default function ProjectsAdminPage() {
               {/* TAB 2: GALLERY */}
               {activeTab === 'gallery' && (
                 <div className="space-y-6">
-                  
+
                   {/* Upload Form */}
                   <form onSubmit={handleAddMedia} className="bg-onyx/40 border border-gold/10 p-5 rounded-xl space-y-4">
                     <h4 className="text-xs text-gold uppercase tracking-wider font-semibold flex items-center gap-2">
                       <UploadCloud className="w-4 h-4" />
                       Add Image to Gallery
                     </h4>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* File upload */}
                       <div className="space-y-2">
@@ -1239,11 +1232,10 @@ export default function ProjectsAdminPage() {
                     {gallery.length > 0 ? (
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                         {gallery.map((item, index) => (
-                          <div 
-                            key={item.id} 
-                            className={`bg-onyx/30 border rounded-xl overflow-hidden p-3 space-y-3 flex flex-col justify-between group transition-all ${
-                              item.is_cover ? 'border-gold shadow-md shadow-gold/5' : 'border-gold/10 hover:border-gold/25'
-                            }`}
+                          <div
+                            key={item.id}
+                            className={`bg-onyx/30 border rounded-xl overflow-hidden p-3 space-y-3 flex flex-col justify-between group transition-all ${item.is_cover ? 'border-gold shadow-md shadow-gold/5' : 'border-gold/10 hover:border-gold/25'
+                              }`}
                           >
                             <div className="relative aspect-video rounded overflow-hidden border border-white/5 bg-black/40">
                               <img src={item.url} alt="Gallery item" className="w-full h-full object-cover" />
@@ -1276,7 +1268,7 @@ export default function ProjectsAdminPage() {
                                 >
                                   <ArrowDown className="w-3.5 h-3.5 rotate-[270deg]" />
                                 </button>
-                                
+
                                 {/* Make Cover */}
                                 {!item.is_cover && (
                                   <button
@@ -1316,7 +1308,7 @@ export default function ProjectsAdminPage() {
               {/* TAB 3: BEFORE / AFTER */}
               {activeTab === 'beforeafter' && (
                 <div className="space-y-6">
-                  
+
                   {/* Upload BA Form */}
                   <form onSubmit={handleAddBeforeAfter} className="bg-onyx/40 border border-gold/10 p-5 rounded-xl space-y-4">
                     <h4 className="text-xs text-gold uppercase tracking-wider font-semibold flex items-center gap-2">
@@ -1398,8 +1390,8 @@ export default function ProjectsAdminPage() {
                     {beforeAfters.length > 0 ? (
                       <div className="space-y-4">
                         {beforeAfters.map((ba) => (
-                          <div 
-                            key={ba.id} 
+                          <div
+                            key={ba.id}
                             className="bg-onyx/30 border border-gold/10 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-6 hover:border-gold/25 transition-all"
                           >
                             <div className="flex items-center gap-4 w-full">
@@ -1422,7 +1414,7 @@ export default function ProjectsAdminPage() {
                                 <p className="text-[10px] text-muted font-mono mt-1 shrink-0">ID: {ba.id}</p>
                               </div>
                             </div>
-                            
+
                             <button
                               type="button"
                               onClick={() => handleDeleteBeforeAfter(ba.id)}
