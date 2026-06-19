@@ -58,7 +58,14 @@ const projectFormSchema = z.object({
   featured_image: z.string().optional().nullable(),
   featured: z.boolean(),
   display_order: z.preprocess((val) => val === '' ? 0 : Number(val), z.number().int().nonnegative('Display order must be 0 or greater')),
-  completion_year: z.preprocess((val) => Number(val), z.number().int().positive().optional().nullable()),
+  completion_year: z.preprocess(
+    (val) => {
+      if (val === '' || val === null || val === undefined) return null;
+      const parsed = Number(val);
+      return isNaN(parsed) ? undefined : parsed;
+    },
+    z.number().int().positive('Completion year must be a positive integer').optional().nullable()
+  ),
   status: z.enum(['draft', 'published', 'archived'] as const),
   project_url: z.string().optional().nullable(),
   client_name: z.string().optional().nullable(),
@@ -245,7 +252,7 @@ export default function ProjectsAdminPage() {
       featured_image: project.featured_image || '',
       featured: project.featured,
       display_order: project.display_order,
-
+      completion_year: project.completion_year ?? null,
       status: project.status,
       project_url: project.project_url || '',
       client_name: project.client_name || '',

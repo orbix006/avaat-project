@@ -401,7 +401,7 @@ export interface Database {
           status: 'draft' | 'published' | 'archived';
           location: string;
           city: string | null;
-          // completion_year retained
+          completion_year: number | null;
           short_desc: string;
           // full_description removed
           design_story: string | null;
