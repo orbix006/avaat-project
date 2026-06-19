@@ -19,12 +19,19 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
           {/* Brand Column */}
           <div className="flex flex-col gap-6">
-            <div>
-              <span className="font-cormorant text-3xl text-gold tracking-[0.22em]">
-                AVAAT
-              </span>
-              <p className="font-jost text-sm text-muted leading-relaxed mt-5 max-w-md">
-                AVAAT is an interior design and architecture studio creating thoughtful spaces that blend functionality, aesthetics, and timeless design.
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3">
+                <img
+                  src="/images/logo.png"
+                  alt="Avaat Design Logo"
+                  className="h-10 w-auto object-contain"
+                />
+                <span className="font-cormorant text-xl tracking-wider text-ivory font-semibold uppercase">
+                  Avaat Design
+                </span>
+              </div>
+              <p className="font-jost text-sm text-muted leading-relaxed mt-1 max-w-md">
+                Avaat Design is an interior design and architecture studio creating thoughtful spaces that blend functionality, aesthetics, and timeless design.
               </p>
             </div>
             

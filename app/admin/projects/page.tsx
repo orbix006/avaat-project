@@ -54,22 +54,18 @@ const projectFormSchema = z.object({
     .regex(/^[a-z0-9-_]+$/, 'Slug can only contain lowercase letters, numbers, hyphens, and underscores'),
   category: z.enum(['residential', 'commercial', 'architecture', 'hospitality', 'renovation'] as const),
   location: z.string().min(2, 'Location is required'),
-  short_desc: z.string().min(1, 'Short Description is required').max(500, 'Short Description cannot exceed 500 characters'),
+  short_description: z.string().min(1, 'Short Description is required').max(500, 'Short Description cannot exceed 500 characters'),
   featured_image: z.string().optional().nullable(),
   featured: z.boolean(),
   display_order: z.preprocess((val) => val === '' ? 0 : Number(val), z.number().int().nonnegative('Display order must be 0 or greater')),
-  completion_year: z.preprocess(
-    (val) => {
-      if (val === '' || val === null || val === undefined) return null;
-      const parsed = Number(val);
-      return isNaN(parsed) ? undefined : parsed;
-    },
-    z.number().int().positive('Completion year must be a positive integer').optional().nullable()
-  ),
+  completion_date: z.string().optional().nullable().or(z.literal('')),
   status: z.enum(['draft', 'published', 'archived'] as const),
   project_url: z.string().optional().nullable(),
   client_name: z.string().optional().nullable(),
   gallery_images: z.array(z.string()).optional().nullable(),
+  full_description: z.string().optional().nullable(),
+  github_url: z.string().optional().nullable(),
+  technologies: z.string().optional().nullable(),
 });
 
 type ProjectFormInput = z.infer<typeof projectFormSchema>;
@@ -109,15 +105,18 @@ export default function ProjectsAdminPage() {
       slug: '',
       category: 'residential',
       location: '',
-      short_desc: '',
+      short_description: '',
       featured_image: null,
       featured: false,
       display_order: 0,
-      completion_year: new Date().getFullYear(),
+      completion_date: new Date().getFullYear().toString(),
       status: 'draft',
       project_url: '',
       client_name: '',
       gallery_images: [],
+      full_description: '',
+      github_url: '',
+      technologies: '',
     }
   });
 
@@ -181,15 +180,18 @@ export default function ProjectsAdminPage() {
         slug: data.slug,
         category: data.category,
         location: data.location,
-        short_desc: data.short_desc,
+        short_description: data.short_description,
         featured_image: data.featured_image ?? null,
         featured: data.featured,
         display_order: data.display_order,
-        completion_year: data.completion_year ?? null,
+        completion_date: data.completion_date ?? null,
         status: data.status,
         project_url: data.project_url ?? null,
         client_name: data.client_name ?? null,
         gallery_images: data.gallery_images ?? [],
+        full_description: data.full_description ?? null,
+        github_url: data.github_url ?? null,
+        technologies: data.technologies ? data.technologies.split(',').map((t: string) => t.trim()).filter(Boolean) : [],
       };
       console.log('INSERT PAYLOAD (admin)', JSON.stringify(payload, null, 2));
 
@@ -215,15 +217,18 @@ export default function ProjectsAdminPage() {
         slug: data.slug,
         category: data.category,
         location: data.location,
-        short_desc: data.short_desc,
+        short_description: data.short_description,
         featured_image: data.featured_image ?? null,
         featured: data.featured,
         display_order: data.display_order,
-        completion_year: data.completion_year ?? null,
+        completion_date: data.completion_date ?? null,
         status: data.status,
         project_url: data.project_url ?? null,
         client_name: data.client_name ?? null,
         gallery_images: data.gallery_images ?? [],
+        full_description: data.full_description ?? null,
+        github_url: data.github_url ?? null,
+        technologies: data.technologies ? data.technologies.split(',').map((t: string) => t.trim()).filter(Boolean) : [],
       };
       console.log('UPDATE PAYLOAD (admin)', JSON.stringify(payload, null, 2));
 
@@ -248,15 +253,18 @@ export default function ProjectsAdminPage() {
       slug: project.slug,
       category: project.category,
       location: project.location,
-      short_desc: project.short_desc,
+      short_description: project.short_description,
       featured_image: project.featured_image || '',
       featured: project.featured,
       display_order: project.display_order,
-      completion_year: project.completion_year ?? null,
+      completion_date: project.completion_date || '',
       status: project.status,
       project_url: project.project_url || '',
       client_name: project.client_name || '',
       gallery_images: project.gallery_images || [],
+      full_description: project.full_description || '',
+      github_url: project.github_url || '',
+      technologies: project.technologies ? project.technologies.join(', ') : '',
     });
 
     setIsEditOpen(true);
@@ -278,15 +286,18 @@ export default function ProjectsAdminPage() {
         slug: project.slug,
         category: project.category,
         location: project.location,
-        short_desc: project.short_desc,
+        short_description: project.short_description,
         featured_image: project.featured_image ?? null,
         featured: project.featured,
         display_order: project.display_order,
-        completion_year: project.completion_year ?? null,
+        completion_date: project.completion_date ?? null,
         status: newStatus,
         project_url: project.project_url ?? null,
         client_name: project.client_name ?? null,
         gallery_images: project.gallery_images ?? [],
+        full_description: project.full_description ?? null,
+        github_url: project.github_url ?? null,
+        technologies: project.technologies ?? null,
       });
       if (res.success) {
         showNotification('success', `Project status updated to ${newStatus}.`);
@@ -544,7 +555,7 @@ export default function ProjectsAdminPage() {
     const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
     const matchesSearch = project.title.toLowerCase().includes(search.toLowerCase()) ||
       project.location.toLowerCase().includes(search.toLowerCase()) ||
-      (project.short_desc && project.short_desc.toLowerCase().includes(search.toLowerCase()));
+      (project.short_description && project.short_description.toLowerCase().includes(search.toLowerCase()));
     return matchesFilter && matchesStatus && matchesSearch;
   });
 
@@ -695,7 +706,7 @@ export default function ProjectsAdminPage() {
                     </span>
                   </div>
 
-                  <p className="text-xs text-muted mt-2 line-clamp-2 min-h-[2rem] leading-relaxed">{project.short_desc}</p>
+                  <p className="text-xs text-muted mt-2 line-clamp-2 min-h-[2rem] leading-relaxed">{project.short_description}</p>
 
                   <div className="text-[10px] text-muted/80 mt-2 font-mono flex flex-wrap items-center gap-1.5">
                     <span>Slug: /{project.slug}</span>
@@ -843,17 +854,18 @@ export default function ProjectsAdminPage() {
                     <p className="text-[10px] text-red-400 font-semibold">{createForm.formState.errors.location.message}</p>
                   )}
                 </div>
-                {/* Completion Year */}
+
+                {/* Completion Date/Year */}
                 <div className="space-y-2">
-                  <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Completion Year</label>
+                  <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Completion Date/Year</label>
                   <input
-                    type="number"
-                    {...createForm.register('completion_year')}
+                    type="text"
+                    {...createForm.register('completion_date')}
                     className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all"
-                    placeholder="e.g. 2026"
+                    placeholder="e.g. 2026 or June 2026"
                   />
-                  {createForm.formState.errors.completion_year && (
-                    <p className="text-[10px] text-red-400 font-semibold">{createForm.formState.errors.completion_year.message}</p>
+                  {createForm.formState.errors.completion_date && (
+                    <p className="text-[10px] text-red-400 font-semibold">{createForm.formState.errors.completion_date.message}</p>
                   )}
                 </div>
 
@@ -897,10 +909,10 @@ export default function ProjectsAdminPage() {
                 </div>
               </div>
 
-              {/* Project URL, Client Name */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Project URL, GitHub URL, Client Name */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div className="space-y-2">
-                  <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Project URL</label>
+                  <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Live Project URL</label>
                   <input
                     type="text"
                     {...createForm.register('project_url')}
@@ -909,14 +921,34 @@ export default function ProjectsAdminPage() {
                   />
                 </div>
                 <div className="space-y-2">
+                  <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">GitHub Repo URL</label>
+                  <input
+                    type="text"
+                    {...createForm.register('github_url')}
+                    className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold font-mono"
+                    placeholder="https://github.com/..."
+                  />
+                </div>
+                <div className="space-y-2">
                   <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Client Name</label>
                   <input
                     type="text"
                     {...createForm.register('client_name')}
-                    className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold font-mono"
+                    className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold"
                     placeholder="Client Co."
                   />
                 </div>
+              </div>
+
+              {/* Technologies */}
+              <div className="space-y-2">
+                <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Technologies (Comma-separated)</label>
+                <input
+                  type="text"
+                  {...createForm.register('technologies')}
+                  className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all"
+                  placeholder="e.g. Next.js, React, Supabase, Tailwind CSS"
+                />
               </div>
 
               {/* Short Description */}
@@ -924,13 +956,24 @@ export default function ProjectsAdminPage() {
                 <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Short Description (Intro) *</label>
                 <textarea
                   rows={2}
-                  {...createForm.register('short_desc')}
+                  {...createForm.register('short_description')}
                   className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all resize-none"
                   placeholder="Summarize project specifications, styles, layouts..."
                 />
-                {createForm.formState.errors.short_desc && (
-                  <p className="text-[10px] text-red-400 font-semibold">{createForm.formState.errors.short_desc.message}</p>
+                {createForm.formState.errors.short_description && (
+                  <p className="text-[10px] text-red-400 font-semibold">{createForm.formState.errors.short_description.message}</p>
                 )}
+              </div>
+
+              {/* Full Description / Overview */}
+              <div className="space-y-2">
+                <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Full Description / Overview</label>
+                <textarea
+                  rows={4}
+                  {...createForm.register('full_description')}
+                  className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all resize-y"
+                  placeholder="Provide a detailed story, design strategy, challenges, and solutions..."
+                />
               </div>
 
               {/* Toggles */}
@@ -1093,16 +1136,18 @@ export default function ProjectsAdminPage() {
                         <p className="text-[10px] text-red-400 font-semibold">{editForm.formState.errors.location.message}</p>
                       )}
                     </div>
-                    {/* Completion Year */}
+
+                    {/* Completion Date/Year */}
                     <div className="space-y-2">
-                      <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Completion Year</label>
+                      <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Completion Date/Year</label>
                       <input
-                        type="number"
-                        {...editForm.register('completion_year')}
+                        type="text"
+                        {...editForm.register('completion_date')}
                         className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all"
+                        placeholder="e.g. 2026 or June 2026"
                       />
-                      {editForm.formState.errors.completion_year && (
-                        <p className="text-[10px] text-red-400 font-semibold">{editForm.formState.errors.completion_year.message}</p>
+                      {editForm.formState.errors.completion_date && (
+                        <p className="text-[10px] text-red-400 font-semibold">{editForm.formState.errors.completion_date.message}</p>
                       )}
                     </div>
 
@@ -1144,6 +1189,73 @@ export default function ProjectsAdminPage() {
                     </div>
                   </div>
 
+                  {/* Project URL, GitHub URL, Client Name */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div className="space-y-2">
+                      <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Live Project URL</label>
+                      <input
+                        type="text"
+                        {...editForm.register('project_url')}
+                        className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold font-mono"
+                        placeholder="https://example.com"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">GitHub Repo URL</label>
+                      <input
+                        type="text"
+                        {...editForm.register('github_url')}
+                        className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold font-mono"
+                        placeholder="https://github.com/..."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Client Name</label>
+                      <input
+                        type="text"
+                        {...editForm.register('client_name')}
+                        className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold"
+                        placeholder="Client Co."
+                      />
+                    </div>
+                  </div>
+
+                  {/* Technologies */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Technologies (Comma-separated)</label>
+                    <input
+                      type="text"
+                      {...editForm.register('technologies')}
+                      className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all"
+                      placeholder="e.g. Next.js, React, Supabase, Tailwind CSS"
+                    />
+                  </div>
+
+                  {/* Short Description */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Short Description (Intro) *</label>
+                    <textarea
+                      rows={2}
+                      {...editForm.register('short_description')}
+                      className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all resize-none"
+                      placeholder="Summarize project specifications, styles, layouts..."
+                    />
+                    {editForm.formState.errors.short_description && (
+                      <p className="text-[10px] text-red-400 font-semibold">{editForm.formState.errors.short_description.message}</p>
+                    )}
+                  </div>
+
+                  {/* Full Description */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Full Description / Overview</label>
+                    <textarea
+                      rows={4}
+                      {...editForm.register('full_description')}
+                      className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-4 py-2.5 w-full focus:outline-none focus:border-gold transition-all resize-y"
+                      placeholder="Provide detailed description..."
+                    />
+                  </div>
+
                   {/* Toggles */}
                   <div className="flex flex-wrap items-center gap-8 bg-onyx/40 border border-gold/5 p-4 rounded-xl">
                     <label className="flex items-center gap-3 cursor-pointer group">
@@ -1169,7 +1281,17 @@ export default function ProjectsAdminPage() {
                     </div>
                   </div>
 
-
+                  {/* Action Button */}
+                  <div className="pt-4 border-t border-gold/10 flex justify-end">
+                    <button
+                      type="submit"
+                      className="gold-btn-primary px-6 py-2.5 rounded shadow-lg shadow-gold/15 flex items-center gap-2"
+                      disabled={isPending || mediaUploadLoading}
+                    >
+                      {isPending || mediaUploadLoading ? <Loader2 className="w-4 h-4 animate-spin text-onyx" /> : <Save className="w-4 h-4" />}
+                      <span>Save Project Details</span>
+                    </button>
+                  </div>
                 </form>
               )}
 

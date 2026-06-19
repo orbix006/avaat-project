@@ -7,4 +7,6 @@ export interface Service {
   iconName: string;
   features: string[];
   startingPrice?: string;
+  image_url?: string | null;
+  imageUrl?: string | null;
 }

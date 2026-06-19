@@ -105,15 +105,22 @@ function LoginForm() {
 
           {/* Logo / Header */}
           <div className="text-center pb-6 border-b border-[#F0EFEA] dark:border-[#262626] mb-8">
-            <motion.div variants={itemVariants} className="flex justify-center items-center gap-2 mb-3">
-              <span className="font-cormorant text-2xl tracking-widest text-[#141417] dark:text-[#F5EFE6] font-bold">AVAAT</span>
-              <span className="text-[10px] bg-[#D4AF37]/10 text-[#D4AF37] px-2 py-0.5 border border-[#D4AF37]/25 tracking-widest uppercase rounded">Studio</span>
+            <motion.div variants={itemVariants} className="flex justify-center items-center gap-3 mb-3">
+              <img
+                src="/images/logo.png"
+                alt="Avaat Design Logo"
+                className="h-10 w-auto object-contain"
+              />
+              <span className="font-cormorant text-xl tracking-wider text-[#141417] dark:text-[#F5EFE6] font-semibold uppercase">
+                Avaat Design
+              </span>
+              <span className="text-[8px] bg-[#D4AF37]/10 text-[#D4AF37] px-1.5 py-0.5 border border-[#D4AF37]/25 tracking-widest uppercase rounded">Studio</span>
             </motion.div>
             <motion.h2 variants={itemVariants} className="font-cormorant text-3xl font-bold tracking-wide text-[#141417] dark:text-[#F5EFE6]">
               Login
             </motion.h2>
             <motion.p variants={itemVariants} className="text-xs text-muted/80 dark:text-[#F5EFE6]/60 mt-1.5 font-jost">
-              Welcome back to AVAAT Designs.
+              Welcome back to Avaat Design.
             </motion.p>
           </div>
 

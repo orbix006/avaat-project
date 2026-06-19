@@ -121,16 +121,18 @@ export function Navbar() {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center justify-between h-14">
-            {/* AVAAT / DESIGN logo */}
+            {/* Logo Image + Brand Name Text */}
             <Link
               href="/"
-              className="group flex flex-col items-start leading-none z-50 select-none"
+              className="group flex items-center gap-3 leading-none z-50 select-none"
             >
-              <span className="font-cormorant text-2xl tracking-[0.25em] text-ivory group-hover:text-gold transition-colors duration-300">
-                AVAAT
-              </span>
-              <span className="font-jost text-[9px] tracking-[0.45em] text-gold uppercase mt-1">
-                DESIGN
+              <img
+                src="/images/logo.png"
+                alt="Avaat Design Logo"
+                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+              <span className="font-cormorant text-xl tracking-wider text-ivory group-hover:text-gold transition-colors duration-300 font-semibold uppercase">
+                Avaat Design
               </span>
             </Link>
 
@@ -202,6 +204,10 @@ export function Navbar() {
             >
               {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
+            {/* Mobile Theme Toggle */}
+            <div className="md:hidden ml-2">
+              <ThemeToggle />
+            </div>
           </nav>
         </div>
       </motion.header>

@@ -31,9 +31,16 @@ export function AdminHeader({ setMobileSidebarOpen }: AdminHeaderProps) {
     <>
       {/* Mobile Top bar header */}
       <header className="md:hidden w-full bg-warm-black border-b border-gold/10 px-4 py-3 flex items-center justify-between z-20 relative">
-        <div className="flex items-center gap-2">
-          <span className="font-cormorant text-xl tracking-wider text-gold font-bold">AVAAT</span>
-          <span className="text-[10px] bg-gold/10 text-gold px-2 py-0.5 border border-gold/20 tracking-widest uppercase rounded">Admin</span>
+        <div className="flex items-center gap-2.5">
+          <img
+            src="/images/logo.png"
+            alt="Avaat Design Logo"
+            className="h-6 w-auto object-contain"
+          />
+          <span className="font-cormorant text-sm tracking-wider text-ivory font-semibold uppercase">
+            Avaat Design
+          </span>
+          <span className="text-[8px] bg-gold/10 text-gold px-1.5 py-0.5 border border-gold/20 tracking-wider uppercase rounded">Admin</span>
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
@@ -54,7 +61,7 @@ export function AdminHeader({ setMobileSidebarOpen }: AdminHeaderProps) {
           <h1 className="font-cormorant text-2xl font-bold tracking-wide text-ivory transition-all duration-300">
             {activeTitle}
           </h1>
-          <p className="text-[11px] text-muted tracking-wider uppercase">AVAAT Design Workspace</p>
+          <p className="text-[11px] text-muted tracking-wider uppercase">Avaat Design Workspace</p>
         </div>
 
         {/* Right side operational widgets */}

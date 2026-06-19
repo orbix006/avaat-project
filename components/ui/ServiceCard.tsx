@@ -1,8 +1,7 @@
 'use client';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+
 import {
-  ArrowRight,
   Sparkles,
   Compass,
   Hammer,
@@ -113,16 +112,6 @@ export function ServiceCard({ service, index = 0, className }: ServiceCardProps)
         {displayDescription}
       </p>
 
-      {/* Learn More CTA Section */}
-      <div className="pt-4 border-t border-gold/5 group-hover:border-gold/10 transition-colors duration-500 mt-auto flex items-center justify-between">
-        <Link
-          href={`/services#${service.slug}`}
-          className="inline-flex items-center gap-2 font-jost text-[10px] tracking-[0.25em] uppercase text-gold hover:text-gold-light group/cta transition-colors duration-300"
-        >
-          <span>Learn More</span>
-          <ArrowRight className="w-3.5 h-3.5 group-hover/cta:translate-x-1.5 transition-transform duration-300 ease-out" />
-        </Link>
-      </div>
     </motion.div>
   );
 }

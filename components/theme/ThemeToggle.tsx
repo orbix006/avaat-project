@@ -15,9 +15,9 @@ export function ThemeToggle() {
 
   if (!mounted) {
     // Return a placeholder of matching size to prevent layout shift and keep SSR clean
-    return (
-      <div className="w-9 h-9 border border-gold/10 rounded-full" aria-hidden="true" />
-    );
+      return (
+        <div className="w-11 h-11 md:w-9 md:h-9 border border-gold/10 rounded-full" aria-hidden="true" />
+      );
   }
 
   const isDark = resolvedTheme === 'dark';
@@ -25,7 +25,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className="relative p-2 rounded-full border border-gold-dark/20 dark:border-gold/20 hover:border-gold-dark/50 dark:hover:border-gold/50 bg-warm-black/5 dark:bg-warm-black/40 hover:bg-gold-dark/5 dark:hover:bg-gold/5 transition-all focus:outline-none focus:ring-2 focus:ring-gold-dark dark:focus:ring-gold focus:ring-offset-2 focus:ring-offset-warm-black w-9 h-9 flex items-center justify-center group"
+      className="relative p-2 rounded-full border border-gold-dark/20 dark:border-gold/20 hover:border-gold-dark/50 dark:hover:border-gold/50 bg-warm-black/5 dark:bg-warm-black/40 hover:bg-gold-dark/5 dark:hover:bg-gold/5 transition-all focus:outline-none focus:ring-2 focus:ring-gold-dark dark:focus:ring-gold focus:ring-offset-2 focus:ring-offset-warm-black w-11 h-11 md:w-9 md:h-9 flex items-center justify-center group"
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >

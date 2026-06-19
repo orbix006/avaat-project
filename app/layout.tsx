@@ -29,11 +29,19 @@ const jost = Jost({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://avaat.design'),
   title: {
-    default: "AVAAT Design | Premium Architectural & Interior Design Studio",
-    template: "%s | AVAAT Design",
+    default: "Avaat Design | Premium Architectural & Interior Design Studio",
+    template: "%s | Avaat Design",
+  },
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
   description:
-    "AVAAT Design is a premium architectural and interior design studio creating refined spaces that balance beauty, functionality, and individuality across India.",
+    "Avaat Design is a premium architectural and interior design studio creating refined spaces that balance beauty, functionality, and individuality across India.",
   keywords: [
     "interior design",
     "architectural design",
@@ -44,7 +52,7 @@ export const metadata: Metadata = {
     "furniture selection",
     "residential design",
     "commercial interior design",
-    "AVAAT Design",
+    "Avaat Design",
     "bespoke interiors India",
     "architectural studio",
   ],
@@ -63,22 +71,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://avaat.design",
-    siteName: "AVAAT Design",
-    title: "AVAAT Design | Premium Architectural & Interior Design Studio",
+    siteName: "Avaat Design",
+    title: "Avaat Design | Premium Architectural & Interior Design Studio",
     description:
-      "AVAAT Design is a premium architectural and interior design studio creating refined spaces that balance beauty, functionality, and individuality.",
+      "Avaat Design is a premium architectural and interior design studio creating refined spaces that balance beauty, functionality, and individuality.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "AVAAT Design - Premium Architectural & Interior Design Studio",
+        alt: "Avaat Design - Premium Architectural & Interior Design Studio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVAAT Design | Premium Architectural & Interior Design Studio",
+    title: "Avaat Design | Premium Architectural & Interior Design Studio",
     description: "Premium architectural and interior design studio crafting exceptional spaces across India.",
     creator: "@avaatdesign",
     images: ["/og-image.jpg"],

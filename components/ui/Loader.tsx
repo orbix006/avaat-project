@@ -45,14 +45,21 @@ export function Loader() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center"
+            className="text-center flex flex-col items-center gap-6"
           >
-            <p className="font-cormorant text-7xl md:text-9xl text-gold tracking-[0.35em]">
-              AVAAT
-            </p>
-            <p className="font-jost text-xs text-muted tracking-[0.5em] uppercase mt-2">
-              Design Studio
-            </p>
+            <img
+              src="/images/logo.png"
+              alt="Avaat Design Logo"
+              className="h-16 md:h-20 w-auto object-contain mx-auto"
+            />
+            <div>
+              <p className="font-cormorant text-7xl md:text-9xl text-gold tracking-[0.35em] pl-[0.35em]">
+                AVAAT
+              </p>
+              <p className="font-jost text-xs text-muted tracking-[0.5em] uppercase mt-2 pl-[0.5em]">
+                Design Studio
+              </p>
+            </div>
           </motion.div>
 
           {/* Progress */}

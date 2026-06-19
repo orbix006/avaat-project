@@ -34,6 +34,7 @@ export async function createService(data: {
   cover_image: string | null;
   sort_order: number;
   is_active: boolean;
+  image_url?: string | null;
 }): Promise<{ success?: boolean; data?: ServiceRow; error?: string }> {
   const supabase = createServerClient();
   try {
@@ -52,6 +53,7 @@ export async function createService(data: {
         cover_image: data.cover_image,
         is_active: data.is_active,
         sort_order: data.sort_order || 0,
+        image_url: data.image_url ?? null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
@@ -79,26 +81,33 @@ export async function updateService(id: string, data: {
   cover_image: string | null;
   sort_order: number;
   is_active: boolean;
+  image_url?: string | null;
 }): Promise<{ success?: boolean; data?: ServiceRow; error?: string }> {
   const supabase = createServerClient();
   try {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) return { error: 'Not authenticated.' };
 
+    const updatePayload: any = {
+      title: data.title,
+      slug: data.slug,
+      service_type: data.service_type,
+      short_desc: data.short_desc,
+      long_desc: data.long_desc,
+      icon_name: data.icon_name,
+      cover_image: data.cover_image,
+      is_active: data.is_active,
+      sort_order: data.sort_order,
+      updated_at: new Date().toISOString(),
+    };
+
+    if (data.image_url !== undefined) {
+      updatePayload.image_url = data.image_url;
+    }
+
     const { data: updatedService, error } = await (supabase
       .from('services' as any) as any)
-      .update({
-        title: data.title,
-        slug: data.slug,
-        service_type: data.service_type,
-        short_desc: data.short_desc,
-        long_desc: data.long_desc,
-        icon_name: data.icon_name,
-        cover_image: data.cover_image,
-        is_active: data.is_active,
-        sort_order: data.sort_order,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updatePayload)
       .eq('id', id)
       .select('*')
       .single();

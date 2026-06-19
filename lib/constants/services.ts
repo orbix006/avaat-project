@@ -15,7 +15,6 @@ export const SERVICES: Service[] = [
       'Material Selection',
       'Lighting & Styling',
     ],
-    startingPrice: '$5,000',
   },
   {
     id: '2',
@@ -30,7 +29,6 @@ export const SERVICES: Service[] = [
       'Construction Drawings',
       'Site Inspections',
     ],
-    startingPrice: '$10,000',
   },
   {
     id: '3',
@@ -45,7 +43,6 @@ export const SERVICES: Service[] = [
       'Structural Changes',
       'Heritage Preservation',
     ],
-    startingPrice: '$8,000',
   },
   {
     id: '4',
@@ -60,7 +57,6 @@ export const SERVICES: Service[] = [
       'Efficiency Mapping',
       'Ergonomic Design',
     ],
-    startingPrice: '$2,500',
   },
   {
     id: '5',
@@ -75,7 +71,6 @@ export const SERVICES: Service[] = [
       'Material Previews',
       'Lighting Mockups',
     ],
-    startingPrice: '$4,000',
   },
   {
     id: '6',
@@ -90,6 +85,5 @@ export const SERVICES: Service[] = [
       'Finish Schedules',
       'Procurement Management',
     ],
-    startingPrice: '$3,500',
   },
 ];

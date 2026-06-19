@@ -83,13 +83,16 @@ export async function createProject(data: {
   slug: string;
   category: ProjectRow['category'];
   location: string;
-  short_desc: string;
+  short_description: string;
+  full_description?: string | null;
   featured_image: string | null;
   featured: boolean;
   display_order: number;
-  completion_year: number | null;
+  completion_date: string | null;
   status: ProjectRow['status'];
   project_url: string | null;
+  github_url?: string | null;
+  technologies?: string[] | null;
   client_name: string | null;
   gallery_images?: string[] | null;
 }): Promise<{ success?: boolean; data?: ProjectRow; error?: string }> {
@@ -120,13 +123,16 @@ export async function createProject(data: {
       slug: data.slug,
       category: data.category,
       location: data.location,
-      short_desc: data.short_desc,
+      short_description: data.short_description,
+      full_description: data.full_description || null,
       featured_image: data.featured_image,
       featured: data.featured,
       status: data.status,
       display_order: data.display_order || 0,
-      completion_year: data.completion_year,
+      completion_date: data.completion_date,
       project_url: data.project_url,
+      github_url: data.github_url || null,
+      technologies: data.technologies || null,
       client_name: data.client_name,
       gallery_images: data.gallery_images || null,
       created_by: user.id,
@@ -145,7 +151,7 @@ export async function createProject(data: {
     return { success: true, data: newProject };
   } catch (err: any) {
     console.error('createProject error:', err);
-    return { error: err?.message || 'Failed to create project.' };
+    return { error: err?.message || err?.details || String(err) || 'Failed to create project.' };
   }
 }
 
@@ -157,13 +163,16 @@ export async function updateProject(id: string, data: {
   slug: string;
   category: ProjectRow['category'];
   location: string;
-  short_desc: string;
+  short_description: string;
+  full_description?: string | null;
   featured_image: string | null;
   featured: boolean;
   display_order: number;
-  completion_year: number | null;
+  completion_date: string | null;
   status: ProjectRow['status'];
   project_url: string | null;
+  github_url?: string | null;
+  technologies?: string[] | null;
   client_name: string | null;
   gallery_images?: string[] | null;
 }): Promise<{ success?: boolean; data?: ProjectRow; error?: string }> {
@@ -195,13 +204,16 @@ export async function updateProject(id: string, data: {
       slug: data.slug,
       category: data.category,
       location: data.location,
-      short_desc: data.short_desc,
+      short_description: data.short_description,
+      full_description: data.full_description || null,
       featured_image: data.featured_image,
       featured: data.featured,
       status: data.status,
       display_order: data.display_order,
-      completion_year: data.completion_year,
+      completion_date: data.completion_date,
       project_url: data.project_url,
+      github_url: data.github_url || null,
+      technologies: data.technologies || null,
       client_name: data.client_name,
       gallery_images: data.gallery_images || null,
       updated_at: new Date().toISOString(),
@@ -218,7 +230,7 @@ export async function updateProject(id: string, data: {
     return { success: true, data: updatedProject };
   } catch (err: any) {
     console.error('updateProject error:', err);
-    return { error: err?.message || 'Failed to update project.' };
+    return { error: err?.message || err?.details || String(err) || 'Failed to update project.' };
   }
 }
 

@@ -98,12 +98,19 @@ export function AdminSidebar({
         <div>
           {/* Logo Header */}
           <div className={`h-20 flex flex-col justify-center border-b border-gold/10 transition-all duration-300 ${isCollapsed ? 'px-4 items-center' : 'px-6'}`}>
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className={`font-cormorant text-2xl tracking-widest text-gold font-semibold group-hover:text-gold-light transition-all duration-300 ${isCollapsed ? 'scale-75' : ''}`}>
-                {isCollapsed ? 'A' : 'AVAAT'}
-              </span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <img
+                src="/images/logo.png"
+                alt="Avaat Design Logo"
+                className={`h-8 w-auto object-contain transition-all duration-300 ${isCollapsed ? 'scale-75' : ''}`}
+              />
               {!isCollapsed && (
-                <span className="text-[9px] bg-gold/10 text-gold font-medium px-1.5 py-0.5 border border-gold/20 tracking-wider uppercase rounded transition-opacity duration-300">
+                <span className="font-cormorant text-sm tracking-wider text-ivory group-hover:text-gold transition-colors duration-300 font-semibold uppercase">
+                  Avaat Design
+                </span>
+              )}
+              {!isCollapsed && (
+                <span className="text-[8px] bg-gold/10 text-gold font-medium px-1 py-0.5 border border-gold/20 tracking-wider uppercase rounded whitespace-nowrap">
                   Admin
                 </span>
               )}
@@ -202,9 +209,16 @@ export function AdminSidebar({
             <div>
               {/* Drawer Header */}
               <div className="flex items-center justify-between pb-6 border-b border-gold/10">
-                <div className="flex items-center gap-2">
-                  <span className="font-cormorant text-2xl tracking-widest text-gold font-semibold">AVAAT</span>
-                  <span className="text-[9px] bg-gold/10 text-gold px-1.5 py-0.5 border border-gold/20 tracking-wider uppercase rounded">Admin</span>
+                <div className="flex items-center gap-2.5">
+                  <img
+                    src="/images/logo.png"
+                    alt="Avaat Design Logo"
+                    className="h-8 w-auto object-contain"
+                  />
+                  <span className="font-cormorant text-sm tracking-wider text-ivory font-semibold uppercase">
+                    Avaat Design
+                  </span>
+                  <span className="text-[8px] bg-gold/10 text-gold px-1 py-0.5 border border-gold/20 tracking-wider uppercase rounded">Admin</span>
                 </div>
                 <button
                   onClick={() => setMobileSidebarOpen(false)}

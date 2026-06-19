@@ -22,10 +22,9 @@ import {
   CheckCircle2, 
   AlertCircle,
   Briefcase,
-  UploadCloud,
-  Image as ImageIcon
+  
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
+
 import { 
   fetchServices, 
   createService, 
@@ -34,6 +33,9 @@ import {
   reorderServices, 
   ServiceRow 
 } from '@/lib/actions/services';
+
+// Bucket name for service images
+
 
 // Dynamic Icon Renderer
 const renderIcon = (name: string | null, className?: string) => {
@@ -69,8 +71,8 @@ const serviceFormSchema = z.object({
   ] as const),
   short_desc: z.string().min(10, 'Short description must be at least 10 characters').max(500, 'Short description cannot exceed 500 characters'),
   long_desc: z.string().optional().nullable(),
+
   icon_name: z.string().min(1, 'Icon selection is required'),
-  cover_image: z.string().optional().nullable(),
   sort_order: z.preprocess((val) => val === '' ? 0 : Number(val), z.number().int().nonnegative('Sort order must be 0 or greater')),
   is_active: z.boolean(),
 });
@@ -89,10 +91,10 @@ export default function ServicesAdminPage() {
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [activeEditService, setActiveEditService] = useState<ServiceRow | null>(null);
-  const [imageUploadLoading, setImageUploadLoading] = useState<boolean>(false);
 
   // Success/Error notifications
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  
 
   // Forms
   const createForm = useForm<ServiceFormInput>({
@@ -103,8 +105,8 @@ export default function ServicesAdminPage() {
       service_type: 'interior_design',
       short_desc: '',
       long_desc: '',
+
       icon_name: 'Briefcase',
-      cover_image: '',
       sort_order: 0,
       is_active: true,
     }
@@ -118,6 +120,7 @@ export default function ServicesAdminPage() {
     setNotification({ type, message });
     setTimeout(() => setNotification(null), 4000);
   };
+
 
   // Fetch all services
   const loadServices = async () => {
@@ -160,53 +163,6 @@ export default function ServicesAdminPage() {
     }
   }, [editTitle, editForm]);
 
-  // Supabase Storage file upload helper for services
-  const uploadImage = async (file: File, serviceId: string): Promise<string | null> => {
-    try {
-      const fileExt = file.name.split('.').pop();
-      const uniqueId = Math.random().toString(36).substring(2, 9);
-      const fileName = `${Date.now()}-${uniqueId}.${fileExt}`;
-      const filePath = `services/${serviceId}/${fileName}`;
-
-      // We upload to the "projects" bucket or "services" bucket. 
-      // Let's check if there's a "services" bucket. If not, the projects bucket is generic.
-      // Let's use projects bucket for all uploads to prevent missing bucket errors.
-      const { error } = await supabase.storage
-        .from('projects')
-        .upload(filePath, file, { cacheControl: '3600', upsert: true });
-
-      if (error) throw error;
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('projects')
-        .getPublicUrl(filePath);
-
-      return publicUrl;
-    } catch (err) {
-      console.error('Storage bucket upload failed:', err);
-      return null;
-    }
-  };
-
-  // Image upload handler
-  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>, formType: 'create' | 'edit') => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const targetForm = formType === 'create' ? createForm : editForm;
-    const targetId = formType === 'create' ? 'temp' : activeEditService?.id || 'temp';
-
-    setImageUploadLoading(true);
-    const url = await uploadImage(file, targetId);
-    if (url) {
-      targetForm.setValue('cover_image', url, { shouldValidate: true });
-      showNotification('success', 'Service cover image uploaded.');
-    } else {
-      showNotification('error', 'Image upload failed.');
-    }
-    setImageUploadLoading(false);
-  };
-
   // Handle create submission
   const onCreateSubmit = async (data: ServiceFormInput) => {
     startTransition(async () => {
@@ -216,8 +172,8 @@ export default function ServicesAdminPage() {
         service_type: data.service_type,
         short_desc: data.short_desc,
         long_desc: data.long_desc ?? null,
+  
         icon_name: data.icon_name,
-        cover_image: data.cover_image ?? null,
         sort_order: data.sort_order,
         is_active: data.is_active,
       };
@@ -242,8 +198,8 @@ export default function ServicesAdminPage() {
       service_type: service.service_type,
       short_desc: service.short_desc,
       long_desc: service.long_desc || '',
+
       icon_name: service.icon_name || 'Briefcase',
-      cover_image: service.cover_image || '',
       sort_order: service.sort_order,
       is_active: service.is_active,
     });
@@ -260,8 +216,8 @@ export default function ServicesAdminPage() {
         service_type: data.service_type,
         short_desc: data.short_desc,
         long_desc: data.long_desc ?? null,
+
         icon_name: data.icon_name,
-        cover_image: data.cover_image ?? null,
         sort_order: data.sort_order,
         is_active: data.is_active,
       };
@@ -286,8 +242,8 @@ export default function ServicesAdminPage() {
         service_type: service.service_type,
         short_desc: service.short_desc,
         long_desc: service.long_desc ?? null,
+
         icon_name: service.icon_name ?? 'Briefcase',
-        cover_image: service.cover_image ?? null,
         sort_order: service.sort_order,
         is_active: updatedStatus
       });
@@ -420,27 +376,14 @@ export default function ServicesAdminPage() {
               }`}
             >
               <div>
-                {/* Image & Icon Overlay Section */}
-                <div className="relative aspect-[21/9] rounded-lg overflow-hidden border border-white/5 bg-onyx shrink-0 mb-4">
-                  {service.cover_image ? (
-                    <img 
-                      src={service.cover_image} 
-                      alt={service.title} 
-                      className="w-full h-full object-cover" 
-                    />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-gold/20 bg-gold/5">
-                      <ImageIcon className="w-8 h-8 opacity-40" />
-                    </div>
-                  )}
-
-                  {/* Icon Overlay */}
-                  <div className="absolute bottom-3 left-3 w-10 h-10 rounded-lg flex items-center justify-center border bg-warm-black/90 text-gold border-gold/25 backdrop-blur-md shadow-lg">
-                    {renderIcon(service.icon_name, "w-5 h-5")}
+                {/* Icon Section */}
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center border bg-onyx text-gold border-gold/25">
+                    {renderIcon(service.icon_name, "w-6 h-6")}
                   </div>
-
+                  
                   {/* Status Badge */}
-                  <span className={`absolute top-3 right-3 px-2 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase border ${
+                  <span className={`px-2 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase border ${
                     service.is_active
                       ? 'bg-green-950/80 text-green-400 border-green-500/20'
                       : 'bg-yellow-950/80 text-yellow-400 border-yellow-500/20'
@@ -623,31 +566,6 @@ export default function ServicesAdminPage() {
                 </div>
               </div>
 
-              {/* Service Cover Image */}
-              <div className="space-y-2 p-4 bg-onyx/40 border border-gold/10 rounded-xl">
-                <label className="text-[10px] text-gold uppercase tracking-wider font-bold block mb-1">Service Cover Image</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <span className="text-[9px] text-muted block uppercase">Option 1: Upload File</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleCoverUpload(e, 'create')}
-                      className="text-xs w-full text-ivory/80 file:bg-gold/15 file:text-gold file:border-none file:px-3 file:py-1 file:rounded file:text-[10px] file:uppercase file:cursor-pointer"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[9px] text-muted block uppercase">Option 2: Cover Image URL</span>
-                    <input
-                      type="text"
-                      {...createForm.register('cover_image')}
-                      className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold font-mono"
-                      placeholder="https://example.com/service.jpg"
-                    />
-                  </div>
-                </div>
-              </div>
-
               {/* Short Description */}
               <div className="space-y-1">
                 <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Short Description (In Card) *</label>
@@ -699,9 +617,9 @@ export default function ServicesAdminPage() {
                 <button
                   type="submit"
                   className="gold-btn-primary px-6 py-2.5 rounded shadow-lg shadow-gold/15 flex items-center gap-2"
-                  disabled={isPending || imageUploadLoading}
+                  disabled={isPending}
                 >
-                  {isPending || imageUploadLoading ? <Loader2 className="w-4 h-4 animate-spin text-onyx" /> : <Save className="w-4 h-4" />}
+                  {isPending ? <Loader2 className="w-4 h-4 animate-spin text-onyx" /> : <Save className="w-4 h-4" />}
                   <span>Save Service</span>
                 </button>
               </div>
@@ -805,30 +723,6 @@ export default function ServicesAdminPage() {
                 </div>
               </div>
 
-              {/* Service Cover Image */}
-              <div className="space-y-2 p-4 bg-onyx/40 border border-gold/10 rounded-xl">
-                <label className="text-[10px] text-gold uppercase tracking-wider font-bold block mb-1">Service Cover Image</label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <span className="text-[9px] text-muted block uppercase">Option 1: Upload File</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleCoverUpload(e, 'edit')}
-                      className="text-xs w-full text-ivory/80 file:bg-gold/15 file:text-gold file:border-none file:px-3 file:py-1 file:rounded file:text-[10px] file:uppercase file:cursor-pointer"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[9px] text-muted block uppercase">Option 2: Cover Image URL</span>
-                    <input
-                      type="text"
-                      {...editForm.register('cover_image')}
-                      className="bg-onyx border border-gold/15 text-xs text-ivory rounded px-3 py-1.5 w-full focus:outline-none focus:border-gold font-mono"
-                    />
-                  </div>
-                </div>
-              </div>
-
               {/* Short Description */}
               <div className="space-y-1">
                 <label className="text-[10px] text-muted uppercase tracking-wider font-semibold">Short Description *</label>
@@ -878,9 +772,9 @@ export default function ServicesAdminPage() {
                 <button
                   type="submit"
                   className="gold-btn-primary px-6 py-2.5 rounded shadow-lg shadow-gold/15 flex items-center gap-2"
-                  disabled={isPending || imageUploadLoading}
+                  disabled={isPending}
                 >
-                  {isPending || imageUploadLoading ? <Loader2 className="w-4 h-4 animate-spin text-onyx" /> : <Save className="w-4 h-4" />}
+                  {isPending ? <Loader2 className="w-4 h-4 animate-spin text-onyx" /> : <Save className="w-4 h-4" />}
                   <span>Save Changes</span>
                 </button>
               </div>

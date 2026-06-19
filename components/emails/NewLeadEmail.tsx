@@ -38,7 +38,7 @@ export const NewLeadEmail = ({
         <Container style={container}>
           <Heading style={h1}>New Consultation Request</Heading>
           <Text style={text}>
-            A new prospect has submitted a consultation request via the AVAAT website.
+            A new prospect has submitted a consultation request via the Avaat Design website.
           </Text>
 
           <Section style={detailsContainer}>
@@ -74,8 +74,8 @@ export const NewLeadEmail = ({
           <Hr style={hr} />
 
           <Text style={footer}>
-            Automated notification from AVAAT CRM. <br />
-            View this lead in your <a href="https://avaat.in/admin/leads" style={link}>Admin Dashboard</a>.
+            Automated notification from Avaat Design CRM. <br />
+            View this lead in your <a href="https://avaat.design/admin/leads" style={link}>Admin Dashboard</a>.
           </Text>
         </Container>
       </Body>

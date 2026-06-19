@@ -39,12 +39,14 @@ export function AuthShowcase() {
       />
 
       {/* Brand Header */}
-      <div className="z-10">
-        <span className="font-cormorant text-2xl tracking-[0.25em] text-[#F5EFE6] block">
-          AVAAT
-        </span>
-        <span className="font-jost text-[9px] tracking-[0.45em] text-[#D4AF37] uppercase mt-1.5 block">
-          DESIGNS
+      <div className="z-10 flex items-center gap-3">
+        <img
+          src="/images/logo.png"
+          alt="Avaat Design Logo"
+          className="h-10 w-auto object-contain"
+        />
+        <span className="font-cormorant text-xl tracking-wider text-ivory font-semibold uppercase">
+          Avaat Design
         </span>
       </div>
 
@@ -76,7 +78,7 @@ export function AuthShowcase() {
             transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="text-base text-[#F5EFE6]/70 max-w-md font-jost leading-relaxed"
           >
-            AVAAT Designs creates timeless interior and architectural experiences that blend luxury, functionality, and thoughtful craftsmanship.
+            Avaat Design creates timeless interior and architectural experiences that blend luxury, functionality, and thoughtful craftsmanship.
           </motion.p>
         </div>
 
@@ -236,7 +238,7 @@ export function AuthShowcase() {
 
       {/* Footer copyright */}
       <div className="z-10 text-[11px] text-[#F5EFE6]/30 tracking-wider">
-        <span>© {new Date().getFullYear()} AVAAT DESIGNS.</span>
+        <span>© {new Date().getFullYear()} Avaat Design.</span>
       </div>
     </div>
   );

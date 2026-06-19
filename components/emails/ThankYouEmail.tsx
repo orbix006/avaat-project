@@ -21,7 +21,7 @@ export const ThankYouEmail = ({ name }: ThankYouEmailProps) => {
   return (
     <Html>
       <Head />
-      <Preview>Thank you for contacting AVAAT</Preview>
+      <Preview>Thank you for contacting Avaat Design</Preview>
       <Body style={main}>
         <Container style={container}>
           <Heading style={h1}>Thank you for reaching out!</Heading>
@@ -31,11 +31,11 @@ export const ThankYouEmail = ({ name }: ThankYouEmailProps) => {
           </Text>
           
           <Text style={text}>
-            We have successfully received your consultation request. Our team at AVAAT will review your project details and get back to you shortly, typically within 24-48 business hours.
+            We have successfully received your consultation request. Our team at Avaat Design will review your project details and get back to you shortly, typically within 24-48 business hours.
           </Text>
 
           <Text style={text}>
-            In the meantime, you might want to explore some of our <Link href="https://avaat.in/portfolio" style={link}>recent projects</Link> or learn more about our <Link href="https://avaat.in/#process" style={link}>design process</Link>.
+            In the meantime, you might want to explore some of our <Link href="https://avaat.design/portfolio" style={link}>recent projects</Link> or learn more about our <Link href="https://avaat.design/#process" style={link}>design process</Link>.
           </Text>
           
           <Text style={text}>
@@ -46,8 +46,8 @@ export const ThankYouEmail = ({ name }: ThankYouEmailProps) => {
 
           <Text style={footer}>
             Best regards,<br />
-            <strong>The AVAAT Team</strong><br />
-            <Link href="https://avaat.in" style={footerLink}>avaat.in</Link>
+            <strong>The Avaat Design Team</strong><br />
+            <Link href="https://avaat.design" style={footerLink}>avaat.design</Link>
           </Text>
         </Container>
       </Body>

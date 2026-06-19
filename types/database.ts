@@ -96,6 +96,8 @@ export interface Service {
   iconName: string;
   iconSvg: string | null;
   coverImage: string | null;
+  imageUrl?: string | null;
+  image_url: string | null;
   featured: boolean;
   order: number;
   createdAt: string;
@@ -113,7 +115,7 @@ export interface Project {
   status: ProjectStatus;
   location: string;
   city: string | null;
-  completionYear: number | null;
+  completionYear: string | number | null;
   shortDescription: string;
   overview: string | null;
   designStory: string | null;
@@ -134,7 +136,7 @@ export interface Project {
   description: string;
   tags: string[];
   client: string;
-  year: number;
+  year: string | number;
   url: string | null;
   projectUrl: string | null;
   githubUrl: string | null;
@@ -355,6 +357,7 @@ export interface Database {
           seo_desc: string | null;
           created_at: string;
           updated_at: string;
+          image_url: string | null;
         };
         Insert: {
           id?: string;
@@ -372,6 +375,7 @@ export interface Database {
           seo_desc?: string | null;
           created_at?: string;
           updated_at?: string;
+          image_url?: string | null;
         };
         Update: {
           id?: string;
@@ -389,6 +393,7 @@ export interface Database {
           seo_desc?: string | null;
           created_at?: string;
           updated_at?: string;
+          image_url?: string | null;
         };
         Relationships: [];
       };
@@ -401,9 +406,9 @@ export interface Database {
           status: 'draft' | 'published' | 'archived';
           location: string;
           city: string | null;
-          completion_year: number | null;
-          short_desc: string;
-          // full_description removed
+          completion_date: string | null;
+          short_description: string;
+          full_description: string | null;
           design_story: string | null;
           design_challenges: string | null;
           materials_finishes: string | null;
@@ -419,9 +424,8 @@ export interface Database {
           seo_title: string | null;
           seo_desc: string | null;
           project_url: string | null;
-          // github_url removed
-          // technologies removed
-          // duplicate completion_year removed
+          github_url: string | null;
+          technologies: string[] | null;
           client_name: string | null;
           gallery_images: string[] | null;
         };
@@ -433,9 +437,9 @@ export interface Database {
           status?: 'draft' | 'published' | 'archived';
           location: string;
           city?: string | null;
-          completion_year?: number | null;
-          short_desc: string;
-          // full_description removed
+          completion_date?: string | null;
+          short_description: string;
+          full_description?: string | null;
           design_story?: string | null;
           design_challenges?: string | null;
           materials_finishes?: string | null;
@@ -451,8 +455,8 @@ export interface Database {
           seo_title?: string | null;
           seo_desc?: string | null;
           project_url?: string | null;
-          // github_url removed
-          // technologies removed
+          github_url?: string | null;
+          technologies?: string[] | null;
           client_name?: string | null;
           gallery_images?: string[] | null;
         };
@@ -464,8 +468,8 @@ export interface Database {
           status?: 'draft' | 'published' | 'archived';
           location?: string;
           city?: string | null;
-          completion_year?: number | null;
-          short_desc?: string;
+          completion_date?: string | null;
+          short_description?: string;
           full_description?: string | null;
           design_story?: string | null;
           design_challenges?: string | null;
@@ -1233,23 +1237,28 @@ export interface Database {
           status: 'draft' | 'published' | 'archived';
           location: string;
           city: string | null;
-          completion_year: number | null;
-          short_desc: string;
-          overview: string | null;
+          completion_date: string | null;
+          short_description: string;
+          full_description: string | null;
           design_story: string | null;
           design_challenges: string | null;
           materials_finishes: string | null;
           final_outcome: string | null;
-          cover_image: string | null;
+          featured_image: string | null;
           video_url: string | null;
-          is_featured: boolean;
-          sort_order: number;
+          featured: boolean;
+          display_order: number;
           view_count: number;
           created_by: string | null;
           created_at: string;
           updated_at: string;
           seo_title: string | null;
           seo_desc: string | null;
+          project_url: string | null;
+          github_url: string | null;
+          technologies: string[] | null;
+          client_name: string | null;
+          gallery_images: string[] | null;
           resolved_cover: string | null;
           tag_names: string[];
         };

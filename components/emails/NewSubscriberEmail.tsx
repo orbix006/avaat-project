@@ -27,7 +27,7 @@ export const NewSubscriberEmail = ({
         <Container style={container}>
           <Heading style={h1}>New Subscriber Alert</Heading>
           <Text style={text}>
-            You have a new subscriber to the AVAAT newsletter.
+            You have a new subscriber to the Avaat Design newsletter.
           </Text>
 
           <Text style={details}>
@@ -38,8 +38,8 @@ export const NewSubscriberEmail = ({
           <Hr style={hr} />
 
           <Text style={footer}>
-            Automated notification from AVAAT CRM. <br />
-            Manage subscribers in your <a href="https://avaat.in/admin/newsletter" style={link}>Admin Dashboard</a>.
+            Automated notification from Avaat Design CRM. <br />
+            Manage subscribers in your <a href="https://avaat.design/admin/newsletter" style={link}>Admin Dashboard</a>.
           </Text>
         </Container>
       </Body>

@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 
+
 import { SERVICES } from '@/lib/constants/services';
 import { ServiceCard } from '@/components/ui/ServiceCard';
+import { getActiveServices } from '@/lib/supabase/queries';
 
 export const metadata: Metadata = {
   title: 'Services',
@@ -9,7 +11,10 @@ export const metadata: Metadata = {
     'Explore AVAAT Design\'s full suite of services: web design, development, brand identity, SEO, e-commerce, and ongoing maintenance.',
 };
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const dbServices = await getActiveServices();
+  const services = dbServices && dbServices.length > 0 ? dbServices : SERVICES;
+
   return (
     <>
       {/* Hero banner */}
@@ -36,7 +41,7 @@ export default function ServicesPage() {
       <section className="section-pad bg-warm-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gold/10">
-            {SERVICES.map((service, i) => (
+            {services.map((service, i) => (
               <ServiceCard key={service.id} service={service} index={i} />
             ))}
           </div>
@@ -47,7 +52,7 @@ export default function ServicesPage() {
       <section className="section-pad bg-onyx">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-20">
-            {SERVICES.map((service, i) => (
+            {services.map((service, i) => (
               <div
                 key={service.id}
                 id={service.slug}
@@ -55,17 +60,7 @@ export default function ServicesPage() {
                   i % 2 === 1 ? 'lg:flex lg:flex-row-reverse' : ''
                 }`}
               >
-                {/* Visual block */}
-                <div className="relative aspect-video bg-warm-black border border-gold/10 flex items-center justify-center overflow-hidden group">
-                  <span className="font-cormorant text-[8rem] text-gold/[0.06] group-hover:text-gold/[0.1] transition-colors duration-700 select-none">
-                    {service.title.charAt(0)}
-                  </span>
-                  <div className="absolute bottom-6 left-6">
-                    <span className="font-jost text-[10px] tracking-[0.2em] uppercase text-gold/60">
-                      {service.startingPrice ? `From ${service.startingPrice}` : 'Custom Pricing'}
-                    </span>
-                  </div>
-                </div>
+
 
                 {/* Text */}
                 <div>
@@ -73,22 +68,22 @@ export default function ServicesPage() {
                   <h2 className="font-cormorant text-4xl text-ivory mb-4">{service.title}</h2>
                   <div className="w-16 h-px bg-gold mb-6" />
                   <p className="font-jost text-muted leading-relaxed mb-8">{service.description}</p>
-                  <ul className="space-y-3">
-                    {service.features.map((f) => (
-                      <li key={f} className="flex items-center gap-3 font-jost text-sm text-muted/80">
-                        <span className="w-4 h-px bg-gold flex-shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
+                  {service.features && service.features.length > 0 && (
+                    <ul className="space-y-3">
+                      {service.features.map((f) => (
+                        <li key={f} className="flex items-center gap-3 font-jost text-sm text-muted/80">
+                          <span className="w-4 h-px bg-gold flex-shrink-0" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-
-
     </>
   );
 }
