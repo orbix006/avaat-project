@@ -76,16 +76,16 @@ export function Navbar() {
 
   // Scroll handler for dynamic background transformation
   useEffect(() => {
-    let ticking = false;
+    let isScrolled = false;
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 30);
-          ticking = false;
-        });
-        ticking = true;
+      const shouldScroll = window.scrollY > 30;
+      if (shouldScroll !== isScrolled) {
+        isScrolled = shouldScroll;
+        setScrolled(shouldScroll);
       }
     };
+    // Run on mount to check initial scroll position
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -116,7 +116,7 @@ export function Navbar() {
         className={cn(
           'fixed top-0 inset-x-0 z-50 transition-all duration-500',
           scrolled
-            ? 'bg-onyx/80 backdrop-blur-xl border-b border-gold/10 py-4'
+            ? 'bg-onyx/95 border-b border-gold/10 py-4'
             : 'bg-transparent py-6'
         )}
       >

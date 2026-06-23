@@ -119,7 +119,11 @@ export function Hero({ slides = [], settings: _settings = {} }: HeroProps) {
       });
     }
 
+    let isIntersecting = true;
+    let observer: IntersectionObserver | null = null;
+
     const render = () => {
+      if (!isIntersecting) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((p) => {
@@ -142,12 +146,31 @@ export function Hero({ slides = [], settings: _settings = {} }: HeroProps) {
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      isIntersecting = false;
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          const wasIntersecting = isIntersecting;
+          isIntersecting = entry.isIntersecting;
+          if (isIntersecting && !wasIntersecting) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = requestAnimationFrame(render);
+          }
+        },
+        { threshold: 0 }
+      );
+      observer.observe(canvas);
+    } else {
+      render();
+    }
 
     return () => {
       window.removeEventListener('resize', onResize);
       cancelAnimationFrame(resizeTimeout);
       cancelAnimationFrame(animationFrameId);
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, []);
 

@@ -153,7 +153,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
               {/* Project Meta Panel */}
               <div className="lg:col-span-4 lg:order-last">
-                <div className="border border-gold/10 bg-onyx/50 backdrop-blur-md p-8 md:p-10 sticky top-32">
+                <div className="border border-gold/10 bg-onyx/95 p-8 md:p-10 sticky top-32">
                   <h3 className="font-cormorant text-2xl text-ivory mb-6">Project Details</h3>
                   <div className="space-y-6">
                     <div className="flex items-start gap-4">

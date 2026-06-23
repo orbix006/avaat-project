@@ -59,7 +59,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
             {/* Sticky Meta Panel */}
             <div className="lg:col-span-4 lg:order-last">
-              <div className="border border-gold/10 bg-onyx/50 backdrop-blur-md p-8 sticky top-32">
+              <div className="border border-gold/10 bg-onyx/95 p-8 sticky top-32">
                 <h2 className="font-cormorant text-2xl text-ivory mb-6">Project Details</h2>
                 <div className="space-y-5">
                   <DetailRow icon={<User className="w-4 h-4 text-gold" />} label="Client">
