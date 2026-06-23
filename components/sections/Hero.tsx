@@ -232,6 +232,16 @@ export function Hero({ slides = [], settings: _settings = {} }: HeroProps) {
         }}
       />
 
+      {/* Background Decorative Wordmark */}
+      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center pointer-events-none overflow-hidden select-none">
+        <span 
+          className="font-cormorant text-gold/5 font-bold tracking-[0.25em] uppercase whitespace-nowrap"
+          style={{ fontSize: 'clamp(4rem, 18vw, 12rem)' }}
+        >
+          AVAAT
+        </span>
+      </div>
+
       {/* Content Container */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20 pt-28 pb-16">
         <div className="max-w-4xl">
@@ -249,7 +259,7 @@ export function Hero({ slides = [], settings: _settings = {} }: HeroProps) {
           </motion.div>
 
           {/* Heading with AnimatePresence for transitions on rotate */}
-          <div className="min-h-[140px] md:min-h-[220px]">
+          <div className="min-h-0 md:min-h-[220px] h-auto">
             <AnimatePresence mode="wait">
               <motion.h1
                 key={current}
@@ -276,7 +286,7 @@ export function Hero({ slides = [], settings: _settings = {} }: HeroProps) {
           </div>
 
           {/* Subtext description */}
-          <div className="min-h-[70px] md:min-h-[90px] mt-8">
+          <div className="min-h-0 md:min-h-[90px] h-auto mt-8">
             <AnimatePresence mode="wait">
               <motion.p
                 key={current}
